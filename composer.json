@@ -1,0 +1,23 @@
+{
+    "name": "luzhuqun/laravel-mqtt-publish",
+    "description": "A simple Laravel 5 mqtt publish provider",
+    "keywords": ["mqtt","laravel","publish", "l5","service provider"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "luzhuqun",
+            "email": "595500783@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "5.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Lzq\\Mqtt\\": "packages/src/Lzq/Mqtt/"
+        }
+    },
+    "minimum-stability": "dev"
+}
+
