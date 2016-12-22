@@ -18,6 +18,6 @@
             "Lzq\\Mqtt\\": "packages/src/Lzq/Mqtt/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "master"
 }
 
