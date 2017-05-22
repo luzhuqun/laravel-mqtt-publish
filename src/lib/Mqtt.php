@@ -6,9 +6,9 @@
  * Time: 13:37
  */
 
-namespace Mqtt\lib;
+namespace Lzq\Mqtt\lib;
 
-use Mqtt\Sam;
+use Lzq\Mqtt\Sam;
 
 define("SAM_MQTT_CLEANSTART", "SAM_MQTT_CLEANSTART");
 define("SAM_MQTT_QOS", "SAM_MQTT_QOS");

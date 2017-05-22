@@ -1,8 +1,8 @@
 <?php
 
-namespace Mqtt;
+namespace Lzq\Mqtt;
 
-use Mqtt\lib\Mqtt;
+use Lzq\Mqtt\lib\Mqtt;
 
 class SamConnection extends Sam
 {

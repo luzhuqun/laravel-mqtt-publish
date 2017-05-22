@@ -1,8 +1,8 @@
 <?php
 require "vendor/autoload.php";
 
-use Mqtt\SamConnection;
-use Mqtt\SamMessage;
+use Lzq\Mqtt\SamConnection;
+use Lzq\Mqtt\SamMessage;
 
 //create a new connection object
 $conn = new SAMConnection();

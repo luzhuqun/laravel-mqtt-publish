@@ -6,7 +6,7 @@
  * Time: 16:57
  */
 
-namespace Mqtt;
+namespace Lzq\Mqtt;
 
 class SamMessage
 {
