@@ -3,7 +3,7 @@ Mqtt is used to publish messages from backend to andriod.
 
 ### Getting start
 `
-composer install luzhuqun/laravel-mqtt-publish
+composer require luzhuqun/laravel-mqtt-publish
 `
 ### How to use
 
