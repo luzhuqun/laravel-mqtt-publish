@@ -6,7 +6,6 @@ Mqtt is used to publish messages from backend to andriod.
     composer require luzhuqun/laravel-mqtt-publish
 `
 ### How to use
-`
 
     $conn = new SAMConnection();//create a new connection object
 
@@ -17,7 +16,7 @@ Mqtt is used to publish messages from backend to andriod.
     $conn->send('topic://'.'tokudu/ab7867d9fd60db65', $msgCpu);//send the message on the topic cpu
 
     $conn->disconnect();
-`
+
 ### Learn more
 A complet mqtt service incluede publisher, service and subscriber.
 ##### service 
