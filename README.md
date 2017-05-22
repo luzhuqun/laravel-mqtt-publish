@@ -7,6 +7,7 @@ Mqtt is used to publish messages from backend to andriod.
 `
 ### How to use
 `
+
     $conn = new SAMConnection();//create a new connection object
 
     $conn->connect('mqtt', array('SAM_HOST' => '192.168.10.147', 'SAM_PORT' => '1883'));//start initialise the connection
