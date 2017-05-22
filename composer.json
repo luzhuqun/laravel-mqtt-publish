@@ -1,7 +1,7 @@
 {
     "name": "luzhuqun/laravel-mqtt-publish",
-    "description": "A simple Laravel 5 mqtt publish provider",
-    "keywords": ["mqtt","laravel","publish", "l5","service provider"],
+    "description": "A simple Laravel 5 mqtt publisher",
+    "keywords": ["mqtt","laravel","publish"],
     "license": "MIT",
     "authors": [
         {
@@ -10,14 +10,18 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "5.x"
+        "php": ">=5.4.0"
     },
     "autoload": {
-        "psr-0": {
-            "Lzq\\Mqtt\\": "packages/src/Lzq/Mqtt/"
+        "psr-4": {
+            "Lzq\\Mqtt\\": "src"
         }
     },
-    "minimum-stability": "master"
+    "autoload-dev": {
+        "psr-4": {
+            "Lzq\\Mqtt\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev"
 }
 

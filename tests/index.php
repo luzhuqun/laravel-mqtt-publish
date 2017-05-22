@@ -18,7 +18,7 @@
     
       #tv {
         width:480px;
-        height:295x;
+        height:295px;
         position: relative;
       }
       #videoDiv { 
@@ -220,22 +220,7 @@
       <td>
         <div class="status">
         Server status:
-<?php
-require('etc/config.php');
-require('lib/php_sam.php');
 
-//create a new connection object
-$conn = new SAMConnection();
-
-//start initialise the connection
-$result = @$conn->connect(SAM_MQTT, array(SAM_HOST => MQTT_SERVER_HOST, SAM_PORT => MQTT_SERVER_POST));      
-if ($result) {
-  $conn->disconnect();
-  print_r("<span class='online'>Online</span>");
-} else {
-  print_r("<span class='offline'>Offline</span>");
-}
-?>        
         </div
       </td>
     </tr>
