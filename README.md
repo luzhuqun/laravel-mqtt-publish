@@ -25,6 +25,11 @@ Mqtt is used to publish messages from backend to andriod.
     //send the message on the topic cpu
     $conn->send('topic://'.'tokudu/ab7867d9fd60db65', $msgCpu);
   
+    //send the message and retain it
+    $conn->send('topic://'.'tokudu/ab7867d9fd60db65', $msgCpu, [
+        'retain' => true,
+    ]);
+
     $conn->disconnect();
 
 ### Learn more
