@@ -9,15 +9,22 @@ Mqtt is used to publish messages from backend to andriod.
 
     use Lzq\Mqtt\SamMessage;
     use Lzq\Mqtt\SamConnection;
-    
-    $conn = new SAMConnection();//create a new connection object
-
-    $conn->connect('mqtt', array('SAM_HOST' => '192.168.10.147', 'SAM_PORT' => '1883'));//start initialise the connection
-
-    $msgCpu = new SAMMessage('hehe');//create a new MQTT message with the output of the shell command as the body
-
-    $conn->send('topic://'.'tokudu/ab7867d9fd60db65', $msgCpu);//send the message on the topic cpu
-
+  
+    //create a new connection object
+    $conn = new SamConnection();
+  
+    //start initialise the connection
+    $conn->connect('mqtt', [
+        'SAM_HOST' => '192.168.10.147',
+        'SAM_PORT' => '1883',
+    ]);
+  
+    //create a new MQTT message with the output of the shell command as the body
+    $msgCpu = new SamMessage('hehe');
+  
+    //send the message on the topic cpu
+    $conn->send('topic://'.'tokudu/ab7867d9fd60db65', $msgCpu);
+  
     $conn->disconnect();
 
 ### Learn more
