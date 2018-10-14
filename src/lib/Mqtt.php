@@ -323,11 +323,11 @@ class Mqtt extends Sam
             return false;
         }
 
-        if (in_array('SAM_MQTT_QOS', $options)) {
+        if (isset($options['SAM_MQTT_QOS'])) {
             $qos = $options['SAM_MQTT_QOS'];
         }
 
-        if (in_array("retain", $options)) {
+        if (isset($options['retain'])) {
             $retain = (int)$options["retain"];
         }
 
