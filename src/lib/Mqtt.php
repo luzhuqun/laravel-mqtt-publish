@@ -10,10 +10,6 @@ namespace Lzq\Mqtt\lib;
 
 use Lzq\Mqtt\Sam;
 
-define("SAM_MQTT_CLEANSTART", "SAM_MQTT_CLEANSTART");
-define("SAM_MQTT_QOS", "SAM_MQTT_QOS");
-define("SAM_MQTT_SUB_SEPARATOR", "#-#");
-
 class Mqtt extends Sam
 {
     public $debug = false;
@@ -94,7 +90,7 @@ class Mqtt extends Sam
             $this->host = $options['SAM_HOST'];
         }
 
-        $this->cleanstart = in_array(SAM_MQTT_CLEANSTART, $options);
+        $this->cleanstart = in_array('SAM_MQTT_CLEANSTART', $options);
 
         if ($this->debug) $this->t("SAMConnection_MQTT.Connect() host=$this->host, port=$this->port, cleanstart=$this->cleanstart");
 
@@ -186,13 +182,13 @@ class Mqtt extends Sam
         $rc = false;
 
         /* strip the topic from the rear of the subscription id...  */
-        $x = strpos($sub_id, SAM_MQTT_SUB_SEPARATOR);
+        $x = strpos($sub_id, '#-#');
         if (!$x) {
             $this->errNo = 279;
             $this->error = 'Specified subscription id ('.$sub_id.') is not valid!';
             return false;
         }
-        $topic = substr($sub_id, $x + strlen(SAM_MQTT_SUB_SEPARATOR));
+        $topic = substr($sub_id, $x + strlen('#-#'));
         $si = substr($sub_id, 0, $x);
 
         /* Are we already connected?               */
@@ -310,8 +306,13 @@ class Mqtt extends Sam
         Send
        --------------------------------- */
     function Send($topic, $message, $options=array()) {
-        if ($this->debug) $this->e('SAMConnection_MQTT.Send()');
+        if ($this->debug) {
+            $this->e('SAMConnection_MQTT.Send()');
+        }
+
         $rc = true;
+        $qos = 0;
+        $retain = 0;
 
         /* check the format of the topic...   */
         if (strncmp($topic, 'topic://', 8) == 0) {
@@ -322,10 +323,12 @@ class Mqtt extends Sam
             return false;
         }
 
-        if (in_array(SAM_MQTT_QOS, $options)) {
-            $qos = $options[SAM_MQTT_QOS];
-        } else {
-            $qos = 0;
+        if (isset($options['SAM_MQTT_QOS'])) {
+            $qos = $options['SAM_MQTT_QOS'];
+        }
+
+        if (isset($options['retain'])) {
+            $retain = (int)$options["retain"];
         }
 
         /* Are we already connected?               */
@@ -336,6 +339,7 @@ class Mqtt extends Sam
 
         $mid = rand();
         $variable = $this->utf($t);
+
         if ($qos > 0) {
             $variable .= pack('n', $mid);
         }
@@ -343,7 +347,7 @@ class Mqtt extends Sam
         $payload = $message->body;
 
         // add in the remaining length field and fix it together
-        $msg = $this->fixed_header("MQTT_PUBLISH", 0, $qos) . $this->remaining_length(strlen($variable)+strlen($payload)) . $variable . $payload;
+        $msg = $this->fixed_header("MQTT_PUBLISH", 0, $qos, $retain) . $this->remaining_length(strlen($variable)+strlen($payload)) . $variable . $payload;
 
         fwrite($this->sock, $msg);
         if ($qos > 0) {
@@ -445,8 +449,8 @@ class Mqtt extends Sam
             return false;
         }
 
-        if (in_array(SAM_MQTT_QOS, $options)) {
-            $qos = $options[SAM_MQTT_QOS];
+        if (in_array('SAM_MQTT_QOS', $options)) {
+            $qos = $options['SAM_MQTT_QOS'];
         } else {
             $qos = 0;
         }
@@ -482,7 +486,7 @@ class Mqtt extends Sam
                 if ($len > 0) {
                     $response = fread($this->sock, $len);
                     /* Return the subscription id with the topic appended to it so we can unsubscribe easily... */
-                    $rc = $this->sub_id.SAM_MQTT_SUB_SEPARATOR.$t;
+                    $rc = $this->sub_id.'#-#'.$t;
                 }
                 if ($len < 3) {
                     if ($this->debug) $this->t("SAMConnection_MQTT.Subscribe() subscribe failed, incorrect length response ($len) received!");
@@ -507,14 +511,14 @@ class Mqtt extends Sam
         if ($this->debug) e("SAMConnection_MQTT.Unsubscribe($sub_id)");
 
         /* Detach the topic from the rear of the subscription id...   */
-        $x = strpos($sub_id, SAM_MQTT_SUB_SEPARATOR);
+        $x = strpos($sub_id, '#-#');
         if (!$x) {
             $this->errNo = 279;
             $this->error = 'Specified subscription id ('.$sub_id.') is not valid!';
             return false;
         }
 
-        $topic = substr($sub_id, $x + strlen(SAM_MQTT_SUB_SEPARATOR));
+        $topic = substr($sub_id, $x + strlen('#-#'));
         $si = substr($sub_id, 0, $x);
 
 
