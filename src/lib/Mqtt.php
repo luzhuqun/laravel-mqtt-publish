@@ -10,10 +10,6 @@ namespace Lzq\Mqtt\lib;
 
 use Lzq\Mqtt\Sam;
 
-define("SAM_MQTT_CLEANSTART", "SAM_MQTT_CLEANSTART");
-define("SAM_MQTT_QOS", "SAM_MQTT_QOS");
-define("SAM_MQTT_SUB_SEPARATOR", "#-#");
-
 class Mqtt extends Sam
 {
     public $debug = false;
@@ -94,7 +90,7 @@ class Mqtt extends Sam
             $this->host = $options['SAM_HOST'];
         }
 
-        $this->cleanstart = in_array(SAM_MQTT_CLEANSTART, $options);
+        $this->cleanstart = in_array('SAM_MQTT_CLEANSTART', $options);
 
         if ($this->debug) $this->t("SAMConnection_MQTT.Connect() host=$this->host, port=$this->port, cleanstart=$this->cleanstart");
 
@@ -186,13 +182,13 @@ class Mqtt extends Sam
         $rc = false;
 
         /* strip the topic from the rear of the subscription id...  */
-        $x = strpos($sub_id, SAM_MQTT_SUB_SEPARATOR);
+        $x = strpos($sub_id, '#-#');
         if (!$x) {
             $this->errNo = 279;
             $this->error = 'Specified subscription id ('.$sub_id.') is not valid!';
             return false;
         }
-        $topic = substr($sub_id, $x + strlen(SAM_MQTT_SUB_SEPARATOR));
+        $topic = substr($sub_id, $x + strlen('#-#'));
         $si = substr($sub_id, 0, $x);
 
         /* Are we already connected?               */
@@ -327,8 +323,8 @@ class Mqtt extends Sam
             return false;
         }
 
-        if (in_array(SAM_MQTT_QOS, $options)) {
-            $qos = $options[SAM_MQTT_QOS];
+        if (in_array('SAM_MQTT_QOS', $options)) {
+            $qos = $options['SAM_MQTT_QOS'];
         }
 
         if (in_array("retain", $options)) {
@@ -453,8 +449,8 @@ class Mqtt extends Sam
             return false;
         }
 
-        if (in_array(SAM_MQTT_QOS, $options)) {
-            $qos = $options[SAM_MQTT_QOS];
+        if (in_array('SAM_MQTT_QOS', $options)) {
+            $qos = $options['SAM_MQTT_QOS'];
         } else {
             $qos = 0;
         }
@@ -490,7 +486,7 @@ class Mqtt extends Sam
                 if ($len > 0) {
                     $response = fread($this->sock, $len);
                     /* Return the subscription id with the topic appended to it so we can unsubscribe easily... */
-                    $rc = $this->sub_id.SAM_MQTT_SUB_SEPARATOR.$t;
+                    $rc = $this->sub_id.'#-#'.$t;
                 }
                 if ($len < 3) {
                     if ($this->debug) $this->t("SAMConnection_MQTT.Subscribe() subscribe failed, incorrect length response ($len) received!");
@@ -515,14 +511,14 @@ class Mqtt extends Sam
         if ($this->debug) e("SAMConnection_MQTT.Unsubscribe($sub_id)");
 
         /* Detach the topic from the rear of the subscription id...   */
-        $x = strpos($sub_id, SAM_MQTT_SUB_SEPARATOR);
+        $x = strpos($sub_id, '#-#');
         if (!$x) {
             $this->errNo = 279;
             $this->error = 'Specified subscription id ('.$sub_id.') is not valid!';
             return false;
         }
 
-        $topic = substr($sub_id, $x + strlen(SAM_MQTT_SUB_SEPARATOR));
+        $topic = substr($sub_id, $x + strlen('#-#'));
         $si = substr($sub_id, 0, $x);
 
 
