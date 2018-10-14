@@ -29,11 +29,11 @@ Mqtt is used to publish messages from backend to andriod.
     $conn->send('topic://'.'tokudu/ab7867d9fd60db65', $msgCpu, [
         'retain' => true,
     ]);
-
+  
     $conn->disconnect();
 
 ### Learn more
-A complet mqtt service incluede publisher, service and subscriber.
+A complet mqtt service include publisher, service and subscriber.
 ##### service 
 [mosquitto](https://github.com/eclipse/mosquitto)
 ##### subscriber
