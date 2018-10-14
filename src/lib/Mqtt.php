@@ -310,8 +310,12 @@ class Mqtt extends Sam
         Send
        --------------------------------- */
     function Send($topic, $message, $options=array()) {
-        if ($this->debug) $this->e('SAMConnection_MQTT.Send()');
+        if ($this->debug) {
+            $this->e('SAMConnection_MQTT.Send()');
+        }
+
         $rc = true;
+        $qos = 0;
 
         /* check the format of the topic...   */
         if (strncmp($topic, 'topic://', 8) == 0) {
@@ -324,8 +328,6 @@ class Mqtt extends Sam
 
         if (in_array(SAM_MQTT_QOS, $options)) {
             $qos = $options[SAM_MQTT_QOS];
-        } else {
-            $qos = 0;
         }
 
         /* Are we already connected?               */
@@ -336,6 +338,7 @@ class Mqtt extends Sam
 
         $mid = rand();
         $variable = $this->utf($t);
+
         if ($qos > 0) {
             $variable .= pack('n', $mid);
         }
