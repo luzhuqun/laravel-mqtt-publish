@@ -316,6 +316,7 @@ class Mqtt extends Sam
 
         $rc = true;
         $qos = 0;
+        $retain = 0;
 
         /* check the format of the topic...   */
         if (strncmp($topic, 'topic://', 8) == 0) {
@@ -328,6 +329,10 @@ class Mqtt extends Sam
 
         if (in_array(SAM_MQTT_QOS, $options)) {
             $qos = $options[SAM_MQTT_QOS];
+        }
+
+        if (in_array("retain", $options)) {
+            $retain = (int)$options["retain"];
         }
 
         /* Are we already connected?               */
@@ -346,7 +351,7 @@ class Mqtt extends Sam
         $payload = $message->body;
 
         // add in the remaining length field and fix it together
-        $msg = $this->fixed_header("MQTT_PUBLISH", 0, $qos) . $this->remaining_length(strlen($variable)+strlen($payload)) . $variable . $payload;
+        $msg = $this->fixed_header("MQTT_PUBLISH", 0, $qos, $retain) . $this->remaining_length(strlen($variable)+strlen($payload)) . $variable . $payload;
 
         fwrite($this->sock, $msg);
         if ($qos > 0) {
